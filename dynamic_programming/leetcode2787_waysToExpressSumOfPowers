@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int mod = 1e9 + 7;
+    vector<vector<int> > dp;
+
+    int solve(int num, int n, int x){
+        if(n == 0) return 1;
+        if(n < 0) return 0;
+
+        int numPowx = pow(num, x);
+        if(numPowx > n) return 0;
+
+        if(dp[n][numPowx] != -1) return dp[n][numPowx];
+
+        int take = solve(num + 1, n - numPowx, x);
+        int skip = solve(num + 1, n, x);
+
+        return dp[n][numPowx] = (take + skip) % mod;
+    }
+    int numberOfWays(int n, int x) {
+        dp.resize(n+1, vector<int> (n+1, -1));
+        return solve(1, n, x);
+    }
+};
